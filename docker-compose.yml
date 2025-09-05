@@ -13,10 +13,11 @@ services:
       - ./addons:/mnt/extra-addons
     environment:
       - HOST=db
-      - USER=odoo
+      - USER=odoo_user
       - PASSWORD_FILE=/run/secrets/postgresql_password
     secrets:
       - postgresql_password
+    # command: ["odoo", "--config=/etc/odoo/odoo.conf", "-i", "base"] # инициализация БД
     command: ["odoo", "--config=/etc/odoo/odoo.conf"]
     networks:
       - odoo-network
@@ -28,7 +29,7 @@ services:
     environment:
       - POSTGRES_DB=postgres_odoo_db
       - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_password
-      - POSTGRES_USER=odoo
+      - POSTGRES_USER=odoo_user
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/pgdata
