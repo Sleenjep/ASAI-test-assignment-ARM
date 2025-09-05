@@ -1,0 +1,1 @@
+{"context": {"lang": "en_US", "tz": "Europe/Moscow", "uid": 2}, "db": "postgres_odoo_db", "debug": "", "login": "admin", "uid": 2, "session_token": "db273c5b617d7ecdd54f6905ed926120ae38ebe32b19858e88ef10c994283757", "_trace": [{"platform": "linux", "browser": "chrome", "ip_address": "172.20.0.1", "first_activity": 1757070435, "last_activity": 1757070435}]}
