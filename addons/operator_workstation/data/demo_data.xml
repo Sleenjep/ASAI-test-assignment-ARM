@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="task_01" model="production.task">
+            <field name="name">ПЗ-001</field>
+            <field name="part_name">Столешница 120x60</field>
+            <field name="operation">cutting</field>
+            <field name="state">ready</field>
+        </record>
+
+        <record id="task_02" model="production.task">
+            <field name="name">ПЗ-002</field>
+            <field name="part_name">Боковина шкафа левая</field>
+            <field name="operation">edging</field>
+            <field name="state">ready</field>
+        </record>
+
+        <record id="task_03" model="production.task">
+            <field name="name">ПЗ-003</field>
+            <field name="part_name">Дверь распашная</field>
+            <field name="operation">drilling</field>
+            <field name="state">ready</field>
+        </record>
+    </data>
+</odoo>

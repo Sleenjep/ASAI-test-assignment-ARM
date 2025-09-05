@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_production_task_tree" model="ir.ui.view">
+        <field name="name">production.task.list</field>
+        <field name="model">production.task</field>
+        <field name="arch" type="xml">
+            <list string="АРМ Оператора" decoration-warning="state == 'in_progress'" decoration-danger="state == 'defect'">
+                <field name="name"/>
+                <field name="part_name"/>
+                <field name="operation"/>
+                <field name="state"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                
+                <button name="action_take_in_work" string="ВЗЯТЬ В РАБОТУ" 
+                        type="object" class="btn-primary"
+                        invisible="state != 'ready'"/>
+                
+                <button name="action_mark_done" string="ГОТОВО" 
+                        type="object" class="btn-success"
+                        invisible="state != 'in_progress'"/>
+                <button name="action_mark_defect" string="БРАК" 
+                        type="object" class="btn-danger"
+                        invisible="state != 'in_progress'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_production_task" model="ir.actions.act_window">
+        <field name="name">АРМ Оператора</field>
+        <field name="res_model">production.task</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('state', 'in', ['ready', 'in_progress', 'defect'])]</field>
+    </record>
+</odoo>

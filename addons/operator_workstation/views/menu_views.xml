@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_operator_workstation_root" 
+              name="Производство" 
+              sequence="10"/>
+
+    <menuitem id="menu_operator_workstation" 
+              name="АРМ Оператора" 
+              parent="menu_operator_workstation_root" 
+              action="action_production_task" 
+              sequence="10"/>
+</odoo>
