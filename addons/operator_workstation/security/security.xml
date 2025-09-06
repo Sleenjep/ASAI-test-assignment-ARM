@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Операторы могут видеть только свои задания или свободные -->
+        <record id="production_task_operator_rule" model="ir.rule">
+            <field name="name">Оператор: только свои задания</field>
+            <field name="model_id" ref="model_production_task" />
+            <field name="domain_force">[
+                '|',
+                ('operator_id', '=', user.id),
+                ('operator_id', '=', False)
+                ]</field>
+            <field name="groups" eval="[(4, ref('group_operator'))]" />
+        </record>
+
+        <!-- Администраторы может видять все задания -->
+        <record id="production_task_manager_rule" model="ir.rule">
+            <field name="name">Администратор: все задания</field>
+            <field name="model_id" ref="model_production_task" />
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_production_manager'))]" />
+        </record>
+    </data>
+</odoo>

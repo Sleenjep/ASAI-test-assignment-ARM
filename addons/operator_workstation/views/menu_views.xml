@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_operator_workstation_root" 
-              name="Производство" 
-              sequence="10"/>
+    <!-- Главное меню -->
+    <menuitem id="menu_operator_workstation_root"
+        name="Производство"
+        sequence="10"
+        groups="base.group_user" />
 
-    <menuitem id="menu_operator_workstation" 
-              name="АРМ Оператора" 
-              parent="menu_operator_workstation_root" 
-              action="action_production_task" 
-              sequence="10"/>
+    <menuitem id="menu_operator_workstation"
+        name="АРМ Оператора"
+        parent="menu_operator_workstation_root"
+        action="action_production_task_all"
+        sequence="10"
+        groups="operator_workstation.group_production_manager" />
+
+    <menuitem id="menu_operator_tasks"
+        name="Мои задания"
+        parent="menu_operator_workstation_root"
+        action="action_production_task"
+        sequence="10"
+        groups="operator_workstation.group_operator" />
+
+    <menuitem id="menu_operator_completed_tasks"
+        name="Выполненные задания"
+        parent="menu_operator_workstation_root"
+        action="action_production_task_completed"
+        sequence="20"
+        groups="operator_workstation.group_operator" />
+
 </odoo>

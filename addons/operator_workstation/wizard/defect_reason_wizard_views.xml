@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_defect_reason_wizard_form" model="ir.ui.view">
+            <field name="name">defect.reason.wizard.form</field>
+            <field name="model">defect.reason.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Причина брака">
+                    <group>
+                        <field name="task_id" invisible="1" />
+                        <field name="defect_reason" placeholder="Укажите причину брака..." />
+                    </group>
+                    <footer>
+                        <button name="confirm_defect" string="Подтвердить брак" type="object"
+                            class="btn-primary" />
+                        <button string="Отмена" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_defect_reason_wizard" model="ir.actions.act_window">
+            <field name="name">Указать причину брака</field>
+            <field name="res_model">defect.reason.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
