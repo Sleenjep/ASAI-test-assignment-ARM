@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Группы пользователей -->
+        <record id="group_operator" model="res.groups">
+            <field name="name">Оператор производства</field>
+            <field name="category_id" ref="base.module_category_manufacturing" />
+            <field name="comment">Оперторы</field>
+        </record>
+
+        <record id="group_production_manager" model="res.groups">
+            <field name="name">Администратор производства</field>
+            <field name="category_id" ref="base.module_category_manufacturing" />
+            <field name="comment">Администраторы</field>
+        </record>
+
+        <!-- Админ -->
+        <record id="base.user_admin" model="res.users">
+            <field name="name">Admin</field>
+            <field name="active">True</field>
+            <field name="groups_id"
+                eval="[(6, 0, [ref('base.group_user'), ref('group_production_manager')])]" />
+        </record>
+
+        <!-- Операторы -->
+        <record id="user_operator_ivan" model="res.users">
+            <field name="name">Иван Иванов</field>
+            <field name="login">ivan</field>
+            <field name="email">ivan@asai.com</field>
+            <field name="password">ivan</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('group_operator')])]" />
+        </record>
+
+        <record id="user_operator_petr" model="res.users">
+            <field name="name">Петр Петров</field>
+            <field name="login">petr</field>
+            <field name="email">petr@asai.com</field>
+            <field name="password">petr</field>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('group_operator')])]" />
+        </record>
+    </data>
+</odoo>
