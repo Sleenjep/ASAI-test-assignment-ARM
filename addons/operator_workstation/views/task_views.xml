@@ -4,32 +4,171 @@
         <field name="name">production.task.list</field>
         <field name="model">production.task</field>
         <field name="arch" type="xml">
-            <list string="АРМ Оператора" decoration-warning="state == 'in_progress'" decoration-danger="state == 'defect'">
-                <field name="name"/>
-                <field name="part_name"/>
-                <field name="operation"/>
-                <field name="state"/>
-                <field name="start_time"/>
-                <field name="end_time"/>
-                
-                <button name="action_take_in_work" string="ВЗЯТЬ В РАБОТУ" 
-                        type="object" class="btn-primary"
-                        invisible="state != 'ready'"/>
-                
-                <button name="action_mark_done" string="ГОТОВО" 
-                        type="object" class="btn-success"
-                        invisible="state != 'in_progress'"/>
-                <button name="action_mark_defect" string="БРАК" 
-                        type="object" class="btn-danger"
-                        invisible="state != 'in_progress'"/>
+            <list string="АРМ Оператора"
+                decoration-warning="state == 'in_progress'"
+                decoration-danger="state == 'defect'"
+                decoration-success="state == 'done'"
+                decoration-info="priority == '3'"
+                create="false" delete="false">
+
+                <field name="priority" widget="priority" />
+                <field name="name" />
+                <field name="part_name" />
+                <field name="operation" />
+                <field name="material" />
+                <field name="dimensions" />
+                <field name="quantity" />
+                <field name="state" />
+                <field name="operator_id" />
+                <field name="start_time" />
+                <field name="end_time" />
+                <field name="duration" />
+                <field name="defect_reason" optional="hide" />
+
+                <button name="action_take_in_work" string="ВЗЯТЬ В РАБОТУ"
+                    type="object" class="btn-primary"
+                    invisible="state != 'ready'"
+                    groups="operator_workstation.group_operator" />
+
+                <button name="action_mark_done" string="ГОТОВО"
+                    type="object" class="btn-success"
+                    invisible="state != 'in_progress' or operator_id != uid" />
+
+                <button name="action_mark_defect" string="БРАК"
+                    type="object" class="btn-danger"
+                    invisible="state != 'in_progress' or operator_id != uid" />
+
+                <button name="action_return_to_ready" string="ВЕРНУТЬ В РАБОТУ"
+                    type="object" class="btn-warning"
+                    invisible="state not in ['defect'] or operator_id != uid" />
             </list>
+        </field>
+    </record>
+
+    <record id="view_production_task_form" model="ir.ui.view">
+        <field name="name">production.task.form</field>
+        <field name="model">production.task</field>
+        <field name="arch" type="xml">
+            <form string="Производственное задание">
+                <header>
+                    <button name="action_take_in_work" string="Взять в работу"
+                        type="object" class="btn-primary"
+                        invisible="state != 'ready'"
+                        groups="operator_workstation.group_operator" />
+                    <button name="action_mark_done" string="Готово"
+                        type="object" class="btn-success"
+                        invisible="state != 'in_progress'" />
+                    <button name="action_mark_defect" string="Брак"
+                        type="object" class="btn-danger"
+                        invisible="state != 'in_progress'" />
+                    <button name="action_return_to_ready" string="Вернуть в работу"
+                        type="object" class="btn-warning"
+                        invisible="state != 'defect'" />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="part_name" />
+                            <field name="operation" />
+                            <field name="priority" widget="priority" />
+                            <field name="sequence" />
+                        </group>
+                        <group>
+                            <field name="operator_id" readonly="1" />
+                            <field name="quantity" />
+                            <field name="material" />
+                            <field name="dimensions" />
+                        </group>
+                    </group>
+
+                    <group string="Время выполнения">
+                        <group>
+                            <field name="start_time" />
+                            <field name="end_time" />
+                        </group>
+                        <group>
+                            <field name="duration" />
+                        </group>
+                    </group>
+
+                    <group string="Дополнительная информация">
+                        <field name="description" />
+                        <field name="notes" />
+                        <field name="defect_reason" invisible="state != 'defect'" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_production_task_search" model="ir.ui.view">
+        <field name="name">production.task.search</field>
+        <field name="model">production.task</field>
+        <field name="arch" type="xml">
+            <search string="Поиск заданий">
+                <field name="name" />
+                <field name="part_name" />
+                <field name="operator_id" />
+
+                <filter string="Готово к работе" name="ready"
+                    domain="[('state', '=', 'ready')]" />
+                <filter string="В работе" name="in_progress"
+                    domain="[('state', '=', 'in_progress')]" />
+                <filter string="Мои задания" name="my_tasks"
+                    domain="[('operator_id', '=', uid)]" />
+                <filter string="Высокий приоритет" name="high_priority"
+                    domain="[('priority', 'in', ['2', '3'])]" />
+
+                <separator />
+                <filter string="Раскрой" name="cutting"
+                    domain="[('operation', '=', 'cutting')]" />
+                <filter string="Кромка" name="edging"
+                    domain="[('operation', '=', 'edging')]" />
+                <filter string="Присадка" name="drilling"
+                    domain="[('operation', '=', 'drilling')]" />
+                <filter string="Упаковка" name="packaging"
+                    domain="[('operation', '=', 'packaging')]" />
+
+                <group expand="0" string="Группировка">
+                    <filter string="Статус" name="group_by_state"
+                        context="{'group_by': 'state'}" />
+                    <filter string="Операция" name="group_by_operation"
+                        context="{'group_by': 'operation'}" />
+                    <filter string="Оператор" name="group_by_operator"
+                        context="{'group_by': 'operator_id'}" />
+                </group>
+            </search>
         </field>
     </record>
 
     <record id="action_production_task" model="ir.actions.act_window">
         <field name="name">АРМ Оператора</field>
         <field name="res_model">production.task</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('state', 'in', ['ready', 'in_progress', 'defect'])]</field>
+        <field name="context">{
+            'search_default_ready': 1,
+            'search_default_in_progress': 1,
+            }</field>
+    </record>
+
+    <record id="action_production_task_all" model="ir.actions.act_window">
+        <field name="name">Все производственные задания</field>
+        <field name="res_model">production.task</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_production_task_completed" model="ir.actions.act_window">
+        <field name="name">Выполненные задания</field>
+        <field name="res_model">production.task</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'done'), ('operator_id', '=', uid)]</field>
+        <field name="context">{}</field>
     </record>
 </odoo>
