@@ -2,6 +2,10 @@
 
 > **Автоматизированное рабочее место оператора** для системы производственного учета мебельных производств на базе Odoo 18.0
 
+# Google-drive с демонстрацией проделанной работы:
+
+> **GDrive:** https://drive.google.com/drive/folders/1e8xRQb3UNAAWxknVX0G2e827QZM6nM-t?usp=sharing
+
 ## Быстрый старт
 
 ```bash
